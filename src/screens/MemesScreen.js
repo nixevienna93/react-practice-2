@@ -81,7 +81,12 @@ const MemesScreen = () => {
     const submitHandler = (e) => {
         e.preventDefault()
         
-        
+        // Reset all values
+        setTopText('')
+        setBottomText('')
+
+        // Close Popup
+        setShow(false)
     }
 
     useEffect(() => {
