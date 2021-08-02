@@ -74,6 +74,8 @@ const DashboardScreen = ({ history }) => {
 
     // Save Meme Handler
     const saveMemeHandler = (e) => {
+        e.preventDefault()
+        e.stopPropagation()
 
         const val = e.target.attributes.getNamedItem("data-input-value").value
         const dataVal = JSON.parse(e.target.attributes.getNamedItem("data-value").value)
@@ -233,7 +235,7 @@ const DashboardScreen = ({ history }) => {
                                         </td> }
                                         <td className='pointer' onClick={saveMemeHandler} data-value={JSON.stringify(meme)} data-input-value={meme.id}>{ meme.id }</td>
                                         <td className='pointer' onClick={saveMemeHandler} data-value={JSON.stringify(meme)} data-input-value={meme.id}>{ meme.name }</td>
-                                        <td className='pointer' onClick={saveMemeHandler} data-value={JSON.stringify(meme)} data-input-value={meme.id}><img width='300' height='300' src={ meme.url } alt={meme.name} className='meme-img' /></td>
+                                        <td className='pointer' onClick={saveMemeHandler} data-value={JSON.stringify(meme)} data-input-value={meme.id}><img onClick={saveMemeHandler} data-value={JSON.stringify(meme)} data-input-value={meme.id} width='300' height='300' src={ meme.url } alt={meme.name} className='meme-img' /></td>
                                     </tr>
                                 ))}
                             </tbody>
