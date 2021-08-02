@@ -25,7 +25,7 @@ const LoginScreen = ({ history }) => {
 
         if (response) {
             localStorage.setItem('userInfo', JSON.stringify(response))
-            document.location.href = '/dashboard'
+            history.push("/dashboard");
         } else {
             console.log('error')
             setError('Incorrect email or password.')

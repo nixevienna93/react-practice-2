@@ -72,6 +72,52 @@ const DashboardScreen = ({ history }) => {
         setSelectedMemes(record)
     }
 
+    // Save Meme Handler
+    const saveMemeHandler = (e) => {
+
+        const val = e.target.attributes.getNamedItem("data-input-value").value
+        const dataVal = JSON.parse(e.target.attributes.getNamedItem("data-value").value)
+        const dataArr = []
+
+        // Check if there are existing records from this user
+        const savedMyLists = JSON.parse(localStorage.getItem("myLists")) || []
+        const userHasLists = savedMyLists.findIndex(o => (o.userId === user.id))
+        
+        if (userHasLists > -1) {
+            // Update record
+            console.log('update record')
+            savedMyLists[userHasLists].myLists.push(dataVal)
+        } else {
+            dataArr.push(dataVal)
+            // Insert New Record
+            console.log('insert new record')
+            savedMyLists.push({ userId: user.id, myLists: dataArr })
+        }
+
+        // add to localstorage
+        localStorage.setItem('myLists', JSON.stringify( savedMyLists ))
+
+        // Show success message
+        setMessage('Added to your list.')
+
+        // Hide message after 3 seconds
+        setTimeout( () => {
+            setMessage('')
+        }, 2000);
+
+         // Reset Checkbox
+         const checkboxes = document.querySelectorAll('input[type=checkbox]')
+
+         checkboxes.forEach(checkbox => {
+             checkbox.checked = false
+         });
+         
+         // checkboxes.setAttribute('checked', false)
+ 
+         // Reset selected memes
+         setSelectedMemes([])
+    }
+
     // Save Handler
     const saveHandler = (e) => {
         e.preventDefault()
@@ -102,6 +148,11 @@ const DashboardScreen = ({ history }) => {
 
         // Show success message
         setMessage('Added to your list.')
+
+        // Hide message after 3 seconds
+        setTimeout( () => {
+            setMessage('')
+        }, 2000);
 
         // Reset Checkbox
         const checkboxes = document.querySelectorAll('input[type=checkbox]')
@@ -155,7 +206,7 @@ const DashboardScreen = ({ history }) => {
                         </div>
                     }
 
-                    { message && <Alert variant='success'>{message}</Alert> }
+                    { message && <Alert className='success-message' variant='success'>{message}</Alert> }
 
                     { activeMakeAList &&
                         <Table striped bordered hover>
@@ -169,7 +220,7 @@ const DashboardScreen = ({ history }) => {
                             </thead>
                             <tbody>
                                 {memes.map((meme) => (
-                                    <tr key={meme.id}>
+                                    <tr>
                                         { activeMakeAList && 
                                         <td>
                                             <input type="checkbox"
@@ -180,9 +231,9 @@ const DashboardScreen = ({ history }) => {
                                                 onChange={checkBoxHandler} 
                                             />
                                         </td> }
-                                        <td>{ meme.id }</td>
-                                        <td>{ meme.name }</td>
-                                        <td><img width='300' height='300' src={ meme.url } alt={meme.name} className='meme-img' /></td>
+                                        <td className='pointer' onClick={saveMemeHandler} data-value={JSON.stringify(meme)} data-input-value={meme.id}>{ meme.id }</td>
+                                        <td className='pointer' onClick={saveMemeHandler} data-value={JSON.stringify(meme)} data-input-value={meme.id}>{ meme.name }</td>
+                                        <td className='pointer' onClick={saveMemeHandler} data-value={JSON.stringify(meme)} data-input-value={meme.id}><img width='300' height='300' src={ meme.url } alt={meme.name} className='meme-img' /></td>
                                     </tr>
                                 ))}
                             </tbody>

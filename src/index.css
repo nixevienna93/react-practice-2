@@ -64,3 +64,16 @@ img {
 button {
   margin: 0 5px;
 }
+
+.pointer {
+  cursor: pointer;
+}
+
+.success-message {
+  position: fixed;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  text-align: center;
+  z-index: 2;
+}
